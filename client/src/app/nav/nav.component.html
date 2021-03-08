@@ -1,0 +1,79 @@
+<nav class="navbar navbar-expand-lg navbar-light ">
+    <div class="container-fluid">
+        <div class="d-flex justfy-content-start">
+            <a class="navbar-brand">
+                <img class="img-fluid navlogo" src="../../assets/toyShop_Logo_png.png" alt="ToyShop">
+            </a>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div class="form-group pr-1">
+                <input class="form-control" type="text" name="search" placeholder="Search here...">
+                
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success" type="submit">
+                    <i class="fa fa-search text-white"></i>
+                </button>
+            </div>
+        </div>
+
+
+        <div class="d-flex justify-content-end" *ngIf="(accountService.currentUser$ | async) === null">
+            <div class="btn btn-outline-primary btn-sm">
+                <i class="fa fa-shopping-cart text-primary p-2"></i>
+                <span class="badge badge-primary p-2">4</span>
+            </div>
+            <div style="width: 100px;">
+
+            </div>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link text-primary">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-info">Register</a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="d-flex justify-content-end" *ngIf="(accountService.currentUser$ | async) as user">
+            <div class="dropdown" dropdown>
+                <a class="dropdown-toggle text-primary" dropdownToggle>
+                    <i class="fa fa-user text-primary p-2"></i>
+                    Welcome {{user.username}}
+                </a>
+
+                <div class="dropdown-menu" *dropdownMenu>
+                    <a class="dropdown-item">Edit Profile</a>
+                    <a class="dropdown-item" (click)="Logout()" >Logout</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</nav>
+
+
+<!-- <nav> -->
+
+
+
+    <!-- <div class="dropdown" dropdown>
+        <a class="dropdown-toggle text-primary" dropdownToggle>
+            <i class="fa fa-user text-primary p-2"></i>
+            Login/Register
+        </a>
+        <div class="dropdown-menu" (ng-click)="$event.stopPropagation()" *dropdownMenu>
+            <form class="form-control">
+                <div class="form-group">
+                    <input type="text" name="username" >
+                </div>
+            </form>
+            <!-- <a class="dropdown-item">Edit Profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item">Logout</a> -->
+        <!-- </div> -->
+    <!-- </div> -->
+
+<!-- </nav> -->
