@@ -9,13 +9,21 @@ import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
+import { HomeComponent } from './home/home.component';
+import { ToastrModule } from "ngx-toastr";
+import { UserprofileComponent } from './userdash/userprofile/userprofile.component';
+import { SharedModule } from './_modules/shared.module';
+import { ProductComponent } from './products/product/product.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     LoginComponent,
-    RegisterComponent 
+    RegisterComponent,
+    HomeComponent,
+    UserprofileComponent,
+    ProductComponent 
   ],
   imports: [
     BrowserModule,
@@ -23,7 +31,7 @@ import { RegisterComponent } from './register/register.component';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    BsDropdownModule.forRoot()
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
