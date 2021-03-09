@@ -21,9 +21,6 @@ export class LoginComponent implements OnInit {
       //console.log('You are logged in!');
       this.toastr.success('You have successfully logged in');
       this.route.navigateByUrl('/');
-    }, error => {
-      console.log(error);
-      this.toastr.error(error.error);
     });
   }
 
