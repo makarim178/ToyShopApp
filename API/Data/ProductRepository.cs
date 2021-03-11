@@ -20,12 +20,17 @@ namespace API.Data
             return await _context.Products
                 .Include(c => c.Category)
                 .Include(b => b.Brand)
+                .Include(p => p.Photos)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Product> GetProductBySkn(string Skn)
         {
-            return await _context.Products.SingleOrDefaultAsync(x => x.Skn == Skn);
+            return await _context.Products
+                .Include(c => c.Category)
+                .Include(b => b.Brand)
+                .Include(p => p.Photos)
+                .SingleOrDefaultAsync(x => x.Skn == Skn);
         }
 
         public async Task<IEnumerable<Product>> GetProductsAsync()
@@ -33,6 +38,7 @@ namespace API.Data
             return await _context.Products
                 .Include(c => c.Category)
                 .Include(b => b.Brand)
+                .Include(p => p.Photos)
                 .ToListAsync();
         }
 

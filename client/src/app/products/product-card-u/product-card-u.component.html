@@ -1,0 +1,27 @@
+<div class="card rounded">
+    <img src="{{product.photoUrl || '../../../assets/user.png'}}" alt="product.productName" class="card-img-top img-fluid">
+
+    <div class="card-body">
+        <h5 class="font-weight-bold text-small"> 
+            <small class="text-muted">
+                {{product.productName}} 
+            </small>
+        </h5>
+
+        <div class="clearfix">
+            <p class="font-weight-bold float-left"> <small>
+                Price: {{product.productPrice | currency: 'CAD'}}
+            </small> 
+        </p>
+            <p class="card-text font-weight-bold float-right">
+                <a class="fa fa-eye text-primary border-0 rounded card-linkers pr-2" routerLink="/product/{{product.id}}"></a>
+                <a class="fa fa-minus-square text-warning border-0 rounded card-linkers pr-2"></a>
+                <a class="fa fa-cart-plus text-success border-0 rounded card-linkers"></a>
+            </p>
+        </div>
+
+        <div class="clearfix text-center" style="line-height: 0.8">
+            <small class="text-primary">Free Shipping when you spend $35 and more</small>
+        </div>
+    </div>
+</div>

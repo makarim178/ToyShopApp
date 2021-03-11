@@ -29,13 +29,13 @@ export class AppComponent implements OnInit {
   }
 
 
-  GetUsers() {
+  // GetUsers() {
     
-    this.http.post('https://localhost:5001/api/account/login', this.model)
-      .subscribe((response) => {
-        console.log(response);
+  //   this.http.post('https://localhost:5001/api/account/login', this.model)
+  //     .subscribe((response) => {
+  //       console.log(response);
         
-        this.users = response;
-      }, error => console.log(error));
-  }
+  //       this.users = response;
+  //     }, error => console.log(error));
+  // }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using API.Entity;
 
 namespace API.DTOs
@@ -11,6 +12,7 @@ namespace API.DTOs
         public string PhotoUrl { get; set; }  
         public Category Category { get; set; }
         public Brand Brand { get; set; }
+        public ICollection<Photo> Photos { get; set; }
         public int RecommendedMinimumAge { get; set; }
         public string RecommendedGender { get; set; }
         public double ProductPrice { get; set; }

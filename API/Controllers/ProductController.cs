@@ -59,10 +59,17 @@ namespace API.Controllers
             // return Ok(productsToReturn);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name="GetproductById")]
         public async Task<ActionResult<ProductDto>> GetproductById(int id)
         {
             var product = await _productRepository.GetProductById(id);
+            return _mapper.Map<ProductDto>(product);
+        }
+
+        [HttpGet("skn{skn}", Name="GetProductBySkn")]
+        public async Task<ActionResult<ProductDto>> GetProductBySkn(string skn)
+        {
+            var product = await _productRepository.GetProductBySkn(skn);
             return _mapper.Map<ProductDto>(product);
         }
 
