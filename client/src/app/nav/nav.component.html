@@ -25,10 +25,10 @@
         <div class="d-flex justify-content-end" >
 
             <ng-container *ngIf="(accountService.currentUser$ | async) === null">
-                <div class="btn btn-outline-primary btn-sm">
-                    <i class="fa fa-shopping-cart text-primary p-2"></i>
-                    <span class="badge badge-primary p-2">4</span>
-                </div>
+                <a class="navLinker" *ngIf="(cartService.cartTotal$ | async) as cart">
+                    <i class="fa fa-shopping-cart text-primary pr-2"></i>
+                    <span>({{cart}})</span>
+                </a>
                 <div style="width: 100px;">
     
                 </div>

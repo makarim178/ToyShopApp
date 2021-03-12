@@ -15,8 +15,8 @@
         </p>
             <p class="card-text font-weight-bold float-right">
                 <a class="fa fa-eye text-primary border-0 rounded card-linkers pr-2" routerLink="/product/{{product.id}}"></a>
-                <a class="fa fa-minus-square text-warning border-0 rounded card-linkers pr-2"></a>
-                <a class="fa fa-cart-plus text-success border-0 rounded card-linkers"></a>
+                <a class="fa fa-minus-square text-warning border-0 rounded card-linkers pr-2" (click)="removeFromCart(product.id)" ></a>
+                <a class="fa fa-cart-plus text-success border-0 rounded card-linkers" (click)="addToCart(product)"></a>
             </p>
         </div>
 
