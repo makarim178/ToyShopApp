@@ -1,55 +1,70 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using API.Data;
-using API.DTOs;
 using API.Entity;
+using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
     public class CategoryController : BaseApiController
     {
-        private readonly DataContext _context;
-        public CategoryController(DataContext context)
+        private readonly ICategoryRepository _categoryRepository;
+        public CategoryController(ICategoryRepository categoryRepository)
         {
-            _context = context;
+            _categoryRepository = categoryRepository;
         }
 
-        [HttpPost("addcategory")]
-        public async Task<ActionResult<Category>> AddBrand(NewCategory category)
+        [HttpPost("category")]
+        public async Task<ActionResult<Category>> AddCategory(Category category)
         {
-           if(await CategoryExists(category.Categoryname)) return BadRequest(category.Categoryname + " already exists");
+            if (await CategoryExists(category.CategoryName)) return BadRequest(category.CategoryName + " already exists");
 
-           var cat = new Category {
-               CategoryName = category.Categoryname
-           };
-
-           _context.Category.Add(cat);
-           await _context.SaveChangesAsync();
-
-           return new Category {
-               Id = cat.Id,
-               CategoryName = cat.CategoryName
-            };
+            await _categoryRepository.Save(category);
+            
+            return category;
         }
 
+        [HttpPut("brand")]
+        public async Task<ActionResult> UpdateCategory(Category category)
+        {
+            _categoryRepository.Update(category);
+            if(await _categoryRepository.SaveAllAsync()) return NoContent();
+            return BadRequest("Failed To Update Category");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Category>> RemoveCategory(int id)
+        {
+            Category category = await _categoryRepository.GetCategoryById(id);
+
+            if(category != null) {
+                _categoryRepository.Remove(category);
+                if(await _categoryRepository.SaveAllAsync()) return NoContent();
+            }
+
+            return BadRequest("Category doesn't exist");
+        }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<Category>>> GetCategory()
         {
-            return Ok(await _context.Category.ToListAsync());
+            return Ok(await _categoryRepository.GetAllCategories());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetBrandById(int id)
+        public async Task<ActionResult<Category>> getCategoryById(int id)
         {
-            return await _context.Category.FindAsync(id);
+            return await _categoryRepository.GetCategoryById(id);
         }
 
-        public async Task<bool> CategoryExists(string categoryname)
+        [HttpGet("categoryname/{categoryName}")]
+        public async Task<ActionResult<Category>> GetCategoryByName(string categoryName)
         {
-            return await _context.Category.AnyAsync(x => x.CategoryName == categoryname);
+            return await _categoryRepository.GetCategoryByName(categoryName);
+        }
+        public async Task<bool> CategoryExists(string categoryName)
+        {
+            return await _categoryRepository.CategoryExistsByName(categoryName);
         }
     }
 }

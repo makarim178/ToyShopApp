@@ -6,6 +6,7 @@ using API.DTOs;
 using API.Entity;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,7 @@ namespace API.Controllers
             _productRepository = productRepository;
         }
 
+        [Authorize]
         [HttpPost("addProduct")]
         public async Task<ActionResult<Product>> AddBrand(NewProduct newProd)
         {
@@ -54,9 +56,6 @@ namespace API.Controllers
             var prodToReturn = _mapper.Map<IEnumerable<ProductDto>>(product);
 
             return Ok(prodToReturn);
-            // var productsToReturn = _mapper.Map<ProductDto>(products);
-
-            // return Ok(productsToReturn);
         }
 
         [HttpGet("{id}", Name="GetproductById")]
@@ -66,11 +65,40 @@ namespace API.Controllers
             return _mapper.Map<ProductDto>(product);
         }
 
-        [HttpGet("skn{skn}", Name="GetProductBySkn")]
+        [HttpGet("skn/{skn}", Name="GetProductBySkn")]
         public async Task<ActionResult<ProductDto>> GetProductBySkn(string skn)
         {
             var product = await _productRepository.GetProductBySkn(skn);
             return _mapper.Map<ProductDto>(product);
+        }
+
+        // [Authorize]
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateProduct(int id) 
+        {
+            var product = await _productRepository.GetProductById(id);
+            if(product != null)
+            {
+                _productRepository.Update(product);
+                if(await _productRepository.SaveAllAsync()) return NoContent();
+            } 
+
+            return BadRequest("product doesn't exists");
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteProduct(int id) 
+        {
+            var product = await _productRepository.GetProductById(id);
+            if(product != null)
+            {
+                _productRepository.Delete(product);
+                if(await _productRepository.SaveAllAsync()) return NoContent();
+            } 
+
+            return BadRequest("product doesn't exists");
+
         }
 
         public async Task<bool> ProductExists(string Skn)

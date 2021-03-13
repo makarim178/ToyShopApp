@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entity;
+using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,54 +12,68 @@ namespace API.Controllers
 {
     public class BrandController : BaseApiController
     {
-        private readonly DataContext _context;
-        public BrandController(DataContext context)
+        private readonly IBrandRepository _brandRepository;
+        public BrandController(IBrandRepository brandRepository)
         {
-            _context = context;
-
+            _brandRepository = brandRepository;
         }
 
         [HttpPost("brand")]
-        public async Task<ActionResult<Brand>> AddBrand(NewBrand brand)
+        public async Task<ActionResult<Brand>> AddBrand(Brand brand)
         {
-           if(await BrandExists(brand.Brandname)) return BadRequest(brand.Brandname + " already exists");
+            if (await BrandExists(brand.BrandName)) return BadRequest(brand.BrandName + " already exists");
 
-           var brands = new Brand {
-               BrandName = brand.Brandname
-           };
+            await _brandRepository.Save(brand);
+            
+            return brand;
+        }
 
-           _context.Brand.Add(brands);
-           await _context.SaveChangesAsync();
-           return brands;
+        [HttpPut("brand")]
+        public async Task<ActionResult> UpdateBrand(Brand brand)
+        {
+            _brandRepository.Update(brand);
+            if(await _brandRepository.SaveAllAsync()) return NoContent();
+            return BadRequest("Failed To Update Brand");
+        }
 
-        //    return new Brand {
-        //        Id = brands.Id,
-        //        BrandName = brands.BrandName
-        //     };
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Brand>> RemoveBrand(int id)
+        {
+            Brand brand = await _brandRepository.GetBrandById(id);
+
+            if(brand != null) {
+                _brandRepository.Remove(brand);
+                if(await _brandRepository.SaveAllAsync()) return NoContent();
+            }
+
+            return BadRequest("Brand doesn't exist");
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Brand>>> GetBrands()
         {
-            return Ok(await _context.Brand.ToListAsync());
+            return Ok(await _brandRepository.GetAllBrands());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name="GetBrandById")]
         public async Task<ActionResult<Brand>> GetBrandById(int id)
         {
-            return await _context.Brand.FindAsync(id);
+            Brand brand = await _brandRepository.GetBrandById(id);
+
+            return await _brandRepository.GetBrandByName(brand.BrandName);
         }
 
-        // [HttpGet("{brandname}")]
-        // public async Task<ActionResult<Brand>> GetBrandsByName(string brandname)
-        // {
-        //     return await _context.Brand.SingleOrDefaultAsync(x => x.BrandName == brandname);
-        // }
+        [HttpGet("brandname/{brandname}", Name = "GetBrandsByName")]
+        public async Task<ActionResult<Brand>> GetBrandsByName(string brandname)
+        {
+            return await _brandRepository.GetBrandByName(brandname);
+        }
 
 
         public async Task<bool> BrandExists(string brandname)
         {
-            return await _context.Brand.AnyAsync(x => x.BrandName == brandname);
+            return await _brandRepository.BrandExistsByName(brandname);
         }
     }
 }

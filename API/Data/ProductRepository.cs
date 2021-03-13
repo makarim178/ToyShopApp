@@ -15,6 +15,12 @@ namespace API.Data
             _context = context;
         }
 
+        public void Delete(Product product)
+        {
+            _context.Products.Remove(product);
+
+        }
+
         public async Task<Product> GetProductById(int id)
         {
             return await _context.Products
@@ -41,6 +47,11 @@ namespace API.Data
                 .Include(p => p.Photos)
                 .ToListAsync();
         }
+
+        // public Task<bool> ProductExistsById(int id)
+        // {
+        //     return (_context.Products.(x => x.Id == id));
+        // }
 
         public Task<bool> ProductExistsBySkn(string Skn)
         {
