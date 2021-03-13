@@ -24,7 +24,7 @@ namespace API.Controllers
             return category;
         }
 
-        [HttpPut("brand")]
+        [HttpPut("category")]
         public async Task<ActionResult> UpdateCategory(Category category)
         {
             _categoryRepository.Update(category);

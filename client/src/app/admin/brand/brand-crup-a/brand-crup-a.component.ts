@@ -1,6 +1,5 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Brand } from 'src/app/_models/brand';
 import { BrandService } from 'src/app/_services/brand.service';
 
 @Component({

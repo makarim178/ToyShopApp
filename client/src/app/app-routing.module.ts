@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BrandMainAComponent } from './admin/brand/brand-main-a/brand-main-a.component';
+import { CatMainAComponent } from './admin/category/cat-main-a/cat-main-a.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
@@ -20,6 +21,7 @@ const routes: Routes = [
     children: [
       {path: 'user', component: UserprofileComponent},
       {path: 'brand', component: BrandMainAComponent},
+      {path: 'category', component: CatMainAComponent},
       // {path: 'product', component:},
     ]
   },

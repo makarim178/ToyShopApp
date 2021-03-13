@@ -24,6 +24,9 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { BrandMainAComponent } from './admin/brand/brand-main-a/brand-main-a.component';
 import { BrandListAComponent } from './admin/brand/brand-list-a/brand-list-a.component';
 import { BrandCrupAComponent } from './admin/brand/brand-crup-a/brand-crup-a.component';
+import { CatCrupAComponent } from './admin/category/cat-crup-a/cat-crup-a.component';
+import { CatListAComponent } from './admin/category/cat-list-a/cat-list-a.component';
+import { CatMainAComponent } from './admin/category/cat-main-a/cat-main-a.component';
 
 
 @NgModule({
@@ -43,6 +46,9 @@ import { BrandCrupAComponent } from './admin/brand/brand-crup-a/brand-crup-a.com
     BrandMainAComponent,
     BrandListAComponent,
     BrandCrupAComponent,
+    CatCrupAComponent,
+    CatListAComponent,
+    CatMainAComponent,
   ],
   imports: [
     BrowserModule,
