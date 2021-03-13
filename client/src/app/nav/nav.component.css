@@ -3,7 +3,7 @@
     width: auto;
 }
 .navLinker {
-    cursor: pointer;
-    text-decoration: none;
+    cursor: pointer !important;
+    text-decoration: none !important;
 }
 

@@ -13,7 +13,6 @@ import { HomeComponent } from './home/home.component';
 import { ToastrModule } from "ngx-toastr";
 import { UserprofileComponent } from './userdash/userprofile/userprofile.component';
 import { SharedModule } from './_modules/shared.module';
-import { ProductComponent } from './products/product/product.component';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
@@ -22,6 +21,10 @@ import { ProductListUComponent } from './products/product-list-u/product-list-u.
 import { ProductCardUComponent } from './products/product-card-u/product-card-u.component';
 import { ProductDetailsUComponent } from './products/product-details-u/product-details-u.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { BrandMainAComponent } from './admin/brand/brand-main-a/brand-main-a.component';
+import { BrandListAComponent } from './admin/brand/brand-list-a/brand-list-a.component';
+import { BrandCrupAComponent } from './admin/brand/brand-crup-a/brand-crup-a.component';
+
 
 @NgModule({
   declarations: [
@@ -31,13 +34,15 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     RegisterComponent,
     HomeComponent,
     UserprofileComponent,
-    ProductComponent,
     TestErrorsComponent,
     NotFoundComponent,
     ServerErrorComponent,
     ProductListUComponent,
     ProductCardUComponent,
-    ProductDetailsUComponent 
+    ProductDetailsUComponent,
+    BrandMainAComponent,
+    BrandListAComponent,
+    BrandCrupAComponent,
   ],
   imports: [
     BrowserModule,

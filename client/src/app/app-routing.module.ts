@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BrandMainAComponent } from './admin/brand/brand-main-a/brand-main-a.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { ProductDetailsUComponent } from './products/product-details-u/product-details-u.component';
-import { ProductComponent } from './products/product/product.component';
 import { RegisterComponent } from './register/register.component';
 import { UserprofileComponent } from './userdash/userprofile/userprofile.component';
 import { AuthGuard } from './_guards/auth.guard';
@@ -19,7 +19,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {path: 'user', component: UserprofileComponent},
-      {path: 'product', component: ProductComponent},
+      {path: 'brand', component: BrandMainAComponent},
+      // {path: 'product', component:},
     ]
   },
   {path:'login', component: LoginComponent},
