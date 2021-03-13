@@ -17,6 +17,9 @@ namespace API.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<IProvinceRepository, ProvinceRepository>();
+            services.AddScoped<ICityRepository, CityRepository>();
             services.AddAutoMapper(typeof(AutomapperProfiles).Assembly);
             services.AddDbContext<DataContext>(options =>
             {

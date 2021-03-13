@@ -14,5 +14,9 @@ namespace API.Data
 
         public DbSet<Category> Category { get; set; }
         public DbSet<Brand> Brand { get; set; }
+
+        public DbSet<Country> Country { get; set; }
+        public DbSet<Province> Province { get; set; }
+        public DbSet<City> City { get; set; }
     }
 }

@@ -27,6 +27,15 @@ import { BrandCrupAComponent } from './admin/brand/brand-crup-a/brand-crup-a.com
 import { CatCrupAComponent } from './admin/category/cat-crup-a/cat-crup-a.component';
 import { CatListAComponent } from './admin/category/cat-list-a/cat-list-a.component';
 import { CatMainAComponent } from './admin/category/cat-main-a/cat-main-a.component';
+import { CountryMainAComponent } from './admin/country/country-main-a/country-main-a.component';
+import { CountryListAComponent } from './admin/country/country-list-a/country-list-a.component';
+import { CountryCrupAComponent } from './admin/country/country-crup-a/country-crup-a.component';
+import { CityCrupAComponent } from './admin/city/city-crup-a/city-crup-a.component';
+import { CityListAComponent } from './admin/city/city-list-a/city-list-a.component';
+import { CityMainAComponent } from './admin/city/city-main-a/city-main-a.component';
+import { ProvinceMainAComponent } from './admin/province/province-main-a/province-main-a.component';
+import { ProvinceListAComponent } from './admin/province/province-list-a/province-list-a.component';
+import { ProvinceCrupAComponent } from './admin/province/province-crup-a/province-crup-a.component';
 
 
 @NgModule({
@@ -49,6 +58,15 @@ import { CatMainAComponent } from './admin/category/cat-main-a/cat-main-a.compon
     CatCrupAComponent,
     CatListAComponent,
     CatMainAComponent,
+    CountryMainAComponent,
+    CountryListAComponent,
+    CountryCrupAComponent,
+    CityCrupAComponent,
+    CityListAComponent,
+    CityMainAComponent,
+    ProvinceMainAComponent,
+    ProvinceListAComponent,
+    ProvinceCrupAComponent,
   ],
   imports: [
     BrowserModule,
