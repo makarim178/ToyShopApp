@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using API.Entity;
 
@@ -18,5 +19,7 @@ namespace API.DTOs
         public double ProductPrice { get; set; }
         public int AvailableQty { get; set; }
         public int MinOrderQty { get; set; }
+        public DateTime ProductCreatedDate { get; set; }
+        public DateTime LastUpdatedDate { get; set; }
     }
 }

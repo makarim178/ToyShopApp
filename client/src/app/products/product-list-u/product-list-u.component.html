@@ -5,7 +5,7 @@
                 <h5>Search options here... </h5>
             </div>
             
-            <div class="col col-2 p-1" *ngFor="let product of products">
+            <div class="col col-2 p-1" *ngFor="let product of products$ | async">
                 <app-product-card-u [product]="product"></app-product-card-u>
             </div>
             

@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { ToastrModule } from "ngx-toastr";
+import { NgxSpinnerModule } from "ngx-spinner";
 import { UserprofileComponent } from './userdash/userprofile/userprofile.component';
 import { SharedModule } from './_modules/shared.module';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
@@ -36,6 +37,9 @@ import { CityMainAComponent } from './admin/city/city-main-a/city-main-a.compone
 import { ProvinceMainAComponent } from './admin/province/province-main-a/province-main-a.component';
 import { ProvinceListAComponent } from './admin/province/province-list-a/province-list-a.component';
 import { ProvinceCrupAComponent } from './admin/province/province-crup-a/province-crup-a.component';
+import { ProdMainAComponent } from './admin/product/prod-main-a/prod-main-a.component';
+import { ProdCrudAComponent } from './admin/product/prod-crud-a/prod-crud-a.component';
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 
 
 @NgModule({
@@ -67,6 +71,8 @@ import { ProvinceCrupAComponent } from './admin/province/province-crup-a/provinc
     ProvinceMainAComponent,
     ProvinceListAComponent,
     ProvinceCrupAComponent,
+    ProdMainAComponent,
+    ProdCrudAComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,10 +81,12 @@ import { ProvinceCrupAComponent } from './admin/province/province-crup-a/provinc
     BrowserAnimationsModule,
     FormsModule,
     SharedModule,
+    NgxSpinnerModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi:true},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi:true},
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi:true},
   ],
   bootstrap: [AppComponent]
 })

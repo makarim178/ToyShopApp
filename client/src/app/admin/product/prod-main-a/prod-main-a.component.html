@@ -1,0 +1,100 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col col-2"></div>
+        <div class="col col-4 " >
+            <div class="d-flex justify-content-start" >
+                <div class="text-left">
+                    <h2>Product List</h2>
+                    <p>Add, Edit or Delete Products from here</p>
+                </div>
+            </div>
+
+            
+        </div>
+        <div class="col col-3 offset-1">
+            <div class="form-group pt-3" >
+                <button class="btn btn-outline-success btn-block" routerLink="/prod/new">
+                    Add New Product &nbsp; <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col col-2"></div>
+    </div>
+
+    <div class="row">
+        <div class="col col-2"></div>
+        <div class="col col-8 text-center">
+            <div class="border rounded p-2">
+                <h4 class="text-secondary">Product Search Options</h4>
+
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <select [(ngModel)]="searchType" (ngModelChange)="onChangeSearchType($event)" class="form-control">
+                            <option value="0">Type : (Search All)</option>
+                            <option value="1">Search by SKN</option>
+                            <option value="2">Select by Brand</option>
+                            <option value="3">Select by Category</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <ng-container *ngIf="loadSkn" >
+                            <input 
+                            [(ngModel)]="skn"
+                            type="number" 
+                            class="form-control" 
+                            name="skn"
+                            placeholder="Enter SKN">
+                        </ng-container>
+                        <ng-container *ngIf="!loadSkn">
+                            <select [(ngModel)]="selectedOption" class="form-control">
+                                <option value="0">Select Option</option>
+                                <option *ngFor="let option of loadOptions" value={{option.id}}>
+                                    {{option.brandName || option.categoryName}}
+                                </option>
+                            </select>
+                        </ng-container>
+                    </div>
+                    <div class="col-sm-4">
+                        <button class="btn btn-primary btn-block" (click)="loadProductList()" >Search</button>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="border rounded p-2">
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th >Id</th>
+                        <th >SKN</th>
+                        <th >Product Name</th>
+                        <th >Category</th>
+                        <th >Brand</th>
+                        <th>Available Qty</th>
+                        <th> options </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let prod of productList">
+                        <th>{{prod.id}}</th>
+                        <td>{{prod.skn}}</td>
+                        <td>{{prod.productName | slice:0:30}}...</td>
+                        <td>{{prod.category.categoryName}}</td>
+                        <td>{{prod.brand.brandName}}</td>
+                        <td> {{prod.availableQty}} </td>
+                        <td>
+                            <i class="fa fa-list pr-2 text-success navlinker" routerLink="/prod/{{prod.id}}" ></i>
+                            <i class="fa fa-trash text-danger navlinker" (click)="removeProduct(prod.id)"></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+
+
+        </div>
+        <div class="col col-2"></div>
+    </div>
+    
+</div>

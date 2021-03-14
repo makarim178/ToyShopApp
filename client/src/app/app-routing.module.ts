@@ -4,6 +4,8 @@ import { BrandMainAComponent } from './admin/brand/brand-main-a/brand-main-a.com
 import { CatMainAComponent } from './admin/category/cat-main-a/cat-main-a.component';
 import { CityMainAComponent } from './admin/city/city-main-a/city-main-a.component';
 import { CountryMainAComponent } from './admin/country/country-main-a/country-main-a.component';
+import { ProdCrudAComponent } from './admin/product/prod-crud-a/prod-crud-a.component';
+import { ProdMainAComponent } from './admin/product/prod-main-a/prod-main-a.component';
 import { ProvinceMainAComponent } from './admin/province/province-main-a/province-main-a.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
@@ -14,6 +16,7 @@ import { ProductDetailsUComponent } from './products/product-details-u/product-d
 import { RegisterComponent } from './register/register.component';
 import { UserprofileComponent } from './userdash/userprofile/userprofile.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -28,6 +31,8 @@ const routes: Routes = [
       {path: 'city', component: CityMainAComponent},
       {path: 'country', component: CountryMainAComponent},
       {path: 'province', component: ProvinceMainAComponent},
+      {path: 'prod', component: ProdMainAComponent},
+      {path: 'prod/:id', component: ProdCrudAComponent, canDeactivate: [PreventUnsavedChangesGuard]},
       // {path: 'product', component:},
     ]
   },

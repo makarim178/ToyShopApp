@@ -73,18 +73,14 @@ namespace API.Controllers
         }
 
         // [Authorize]
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateProduct(int id) 
+        [HttpPut("product")]
+        public async Task<ActionResult> UpdateProduct(Product product) 
         {
-            var product = await _productRepository.GetProductById(id);
-            if(product != null)
-            {
-                _productRepository.Update(product);
-                if(await _productRepository.SaveAllAsync()) return NoContent();
-            } 
+            _productRepository.Update(product);
+            product.LastUpdatedDate = DateTime.Now;
+            if(await _productRepository.SaveAllAsync()) return NoContent();
 
             return BadRequest("product doesn't exists");
-
         }
 
         [HttpDelete("{id}")]
