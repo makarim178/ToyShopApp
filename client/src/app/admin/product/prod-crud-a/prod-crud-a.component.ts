@@ -27,26 +27,14 @@ export class ProdCrudAComponent implements OnInit {
   categories: any[]= [];
 
   product: any = {};
-  galleryOptions: NgxGalleryOptions[];
-  galleryImages: NgxGalleryImage[];
+  // galleryOptions: NgxGalleryOptions[];
+  // galleryImages: NgxGalleryImage[];
 
   selectedCat = 0;
   selectedBrand = 0;
   selectedGender=0;
 
   gender=['All','Boys','Girls']
-
-  photos = [
-    {
-      url: 'https://res.cloudinary.com/makarim/image/upload/v1613691836/bvbnuymvybr97e5fggr9.jpg'
-    },
-    {
-      url: 'https://res.cloudinary.com/makarim/image/upload/v1613691094/bfrqxassjmq71bpzclgp.jpg'
-    },
-    {
-      url: 'https://res.cloudinary.com/makarim/image/upload/v1613690838/ccgk0x3jfm43c0hxkyjf.jpg'
-    }
-  ]
 
   constructor(private urlTrack: ActivatedRoute, private productService: ProductService
       , private brandService: BrandService, private catService: CategoryService
@@ -59,16 +47,16 @@ export class ProdCrudAComponent implements OnInit {
     this.loadBrands();
     this.loadCategories();
     
-    this.galleryOptions = [
-      {
-        width: '500px',
-        height: '500px',
-        imagePercent: 100,
-        thumbnailsColumns: 4,
-        imageAnimation: NgxGalleryAnimation.Fade,
-        preview: false
-      }
-    ]
+    // this.galleryOptions = [
+    //   {
+    //     width: '500px',
+    //     height: '500px',
+    //     imagePercent: 100,
+    //     thumbnailsColumns: 4,
+    //     imageAnimation: NgxGalleryAnimation.Fade,
+    //     preview: false
+    //   }
+    // ]
 
     if(this.urlTrack.snapshot.paramMap.get('id') !== "new"){
   
@@ -78,7 +66,12 @@ export class ProdCrudAComponent implements OnInit {
 
   getImages(): NgxGalleryImage[] {
     const imageUrls= [];
-    for(const photo of this.photos) {
+    
+    
+    for(const photo of this.product.photos) {
+      console.log(photo);
+      
+      
       imageUrls.push({
         small: photo?.url,
         medium: photo?.url,
@@ -91,7 +84,7 @@ export class ProdCrudAComponent implements OnInit {
 
   loadProduct() {
     this.forUpdate = true;
-    this.galleryImages = this.getImages(); // should be inside loadProduct()
+     
     this.productService
       .getProductById(this.urlTrack.snapshot.paramMap.get('id'))
       .subscribe(product => {
@@ -106,6 +99,7 @@ export class ProdCrudAComponent implements OnInit {
         if(gender == "Girls") this.selectedGender = 2;
         
         this.product = product
+        //this.galleryImages = this.getImages();
       });
   }
 

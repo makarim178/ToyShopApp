@@ -1,3 +1,4 @@
+import { AUTO_STYLE } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
@@ -21,12 +22,11 @@ export class ProductDetailsUComponent implements OnInit {
 
     this.galleryOptions = [
       {
-        width:'500px',
-        height: '500px',
-        imagePercent: 100,
+        width:"100%",
+        imagePercent: 80,
         thumbnailsColumns: 4,
         imageAnimation: NgxGalleryAnimation.Slide,
-        preview: false
+        preview: true
       }
     ]
   }

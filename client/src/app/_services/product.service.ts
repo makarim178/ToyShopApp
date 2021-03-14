@@ -50,4 +50,11 @@ export class ProductService {
   removeProduct(id) {
     return this.http.delete(this.baseUrl + `product/${id}`);
   }
+
+  setMainPhoto(photoUpdate) {
+    return this.http.put(this.baseUrl + 'product/set-main-photo', photoUpdate);
+  }
+  removePhoto(photoId: number, prodId: number) {
+    return this.http.delete(this.baseUrl + `product/delete-photo/${photoId}/${prodId}`);
+  }
 }

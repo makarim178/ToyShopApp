@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.DTOs;
 using API.Entity;
 using API.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
@@ -10,8 +13,10 @@ namespace API.Data
     public class ProductRepository : IProductRepository
     {
         private readonly DataContext _context;
-        public ProductRepository(DataContext context)
+        private readonly IMapper _mapper;
+        public ProductRepository(DataContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -21,30 +26,37 @@ namespace API.Data
 
         }
 
-        public async Task<Product> GetProductById(int id)
+        
+
+        public async Task<ProductDto> GetProductById(int id)
         {
             return await _context.Products
+                .Where(x => x.Id == id)
+                .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
+        }
+
+        public async Task<Product> GetProductByIdDelete(int id)
+        {
+            return await _context.Products
+                .Include(p => p.Photos)
                 .Include(c => c.Category)
                 .Include(b => b.Brand)
-                .Include(p => p.Photos)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<Product> GetProductBySkn(string Skn)
+        public async Task<ProductDto> GetProductBySkn(string Skn)
         {
             return await _context.Products
-                .Include(c => c.Category)
-                .Include(b => b.Brand)
-                .Include(p => p.Photos)
-                .SingleOrDefaultAsync(x => x.Skn == Skn);
+                .Where(x => x.Skn == Skn)
+                .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetProductsAsync()
+        public async Task<IEnumerable<ProductDto>> GetProductsAsync()
         {
             return await _context.Products
-                .Include(c => c.Category)
-                .Include(b => b.Brand)
-                .Include(p => p.Photos)
+                .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 

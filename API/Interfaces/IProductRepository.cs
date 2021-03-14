@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using API.DTOs;
 using API.Entity;
 
 namespace API.Interfaces
@@ -15,9 +16,10 @@ namespace API.Interfaces
         Task<bool> ProductExistsBySkn(string Skn);
         //Task<bool> ProductExistsById(int id);
 
-        Task<IEnumerable<Product>> GetProductsAsync();
-        Task<Product> GetProductById(int id);
-        Task<Product> GetProductBySkn(string Skn);
+        Task<IEnumerable<ProductDto>> GetProductsAsync();
+        Task<ProductDto> GetProductById(int id);
+        Task<Product> GetProductByIdDelete(int id);
+        Task<ProductDto> GetProductBySkn(string Skn);
 
         
     }

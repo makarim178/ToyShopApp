@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
@@ -7,6 +8,7 @@ using API.Entity;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,9 +18,11 @@ namespace API.Controllers
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
+        private readonly IPhotoService _photoService;
 
-        public ProductController(IProductRepository productRepository, IMapper mapper)
+        public ProductController(IProductRepository productRepository, IMapper mapper, IPhotoService photoService)
         {
+            _photoService = photoService;
             _mapper = mapper;
             _productRepository = productRepository;
         }
@@ -54,18 +58,17 @@ namespace API.Controllers
         {
             var product = await _productRepository.GetProductsAsync();
             var prodToReturn = _mapper.Map<IEnumerable<ProductDto>>(product);
-
             return Ok(prodToReturn);
         }
 
-        [HttpGet("{id}", Name="GetproductById")]
+        [HttpGet("{id}", Name = "GetproductById")]
         public async Task<ActionResult<ProductDto>> GetproductById(int id)
         {
             var product = await _productRepository.GetProductById(id);
             return _mapper.Map<ProductDto>(product);
         }
 
-        [HttpGet("skn/{skn}", Name="GetProductBySkn")]
+        [HttpGet("skn/{skn}", Name = "GetProductBySkn")]
         public async Task<ActionResult<ProductDto>> GetProductBySkn(string skn)
         {
             var product = await _productRepository.GetProductBySkn(skn);
@@ -74,32 +77,106 @@ namespace API.Controllers
 
         // [Authorize]
         [HttpPut("product")]
-        public async Task<ActionResult> UpdateProduct(Product product) 
+        public async Task<ActionResult> UpdateProduct(Product product)
         {
             _productRepository.Update(product);
             product.LastUpdatedDate = DateTime.Now;
-            if(await _productRepository.SaveAllAsync()) return NoContent();
+            if (await _productRepository.SaveAllAsync()) return NoContent();
 
             return BadRequest("product doesn't exists");
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteProduct(int id) 
+        public async Task<ActionResult> DeleteProduct(int id)
         {
-            var product = await _productRepository.GetProductById(id);
-            if(product != null)
+            var product = await _productRepository.GetProductByIdDelete(id);
+            if (product != null)
             {
                 _productRepository.Delete(product);
-                if(await _productRepository.SaveAllAsync()) return NoContent();
-            } 
+                if (await _productRepository.SaveAllAsync()) return NoContent();
+            }
 
             return BadRequest("product doesn't exists");
 
         }
 
+        [HttpPost("add-photo/{id}")]
+        public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file, int id)
+        {
+            var product = await _productRepository.GetProductByIdDelete(id);
+
+            var result = await _photoService.AddPhotoAsync(file);
+
+            if(result.Error != null)  return BadRequest(result.Error.Message);
+
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId
+            };
+
+            if(product.Photos.Count == 0) 
+            {
+                photo.IsMain = true;
+            }
+
+            product.Photos.Add(photo);
+
+            if(await _productRepository.SaveAllAsync())
+            {
+                // return _mapper.Map<PhotoDto>(photo);
+                return Created("GetproductById", _mapper.Map<PhotoDto>(photo));
+                
+            }
+
+
+            return BadRequest("Problem adding photos");
+        }
+
         public async Task<bool> ProductExists(string Skn)
         {
             return await _productRepository.ProductExistsBySkn(Skn);
+        }
+
+        [HttpPut("set-main-photo")]
+        public async Task<ActionResult> SetMainPhoto(UpdatePhotoProdDto updatePhotoProdDto)
+        {
+            var product = await _productRepository.GetProductByIdDelete(updatePhotoProdDto.ProductId);
+            var photo = product.Photos.FirstOrDefault(x => x.id == updatePhotoProdDto.PhotoId);
+
+            if(photo.IsMain) return BadRequest("This is already your main photo");
+
+            var currentMain = product.Photos.FirstOrDefault(x => x.IsMain);
+
+            if(currentMain != null) currentMain.IsMain = false;
+            Console.WriteLine("\nI am here");
+            photo.IsMain = true;
+            product.LastUpdatedDate = DateTime.Now;
+
+            // _productRepository.Update(product);
+
+            if(await _productRepository.SaveAllAsync()) return NoContent();
+
+            return BadRequest("Failed to set main pohoto");
+
+        }
+
+        [HttpDelete("delete-photo/{photoId}/{prodId}")]
+        public async Task<ActionResult> DeletePhoto(int photoId, int prodId)
+        {
+            var product = await _productRepository.GetProductByIdDelete(prodId);
+            var photo = product.Photos.FirstOrDefault(x => x.id == photoId);
+            if(photo == null) return NotFound();
+            if(photo.IsMain) return BadRequest("You cannot remove your main photo!");
+            if(photo.PublicId != null) {
+                var result = await _photoService.DeletePhotoAsync(photo.PublicId);
+                if(result.Error != null) return BadRequest(result.Error.Message);
+            }
+
+            product.Photos.Remove(photo);
+            if(await _productRepository.SaveAllAsync() ) return NoContent();
+
+            return BadRequest("Failed to remove photo");
         }
     }
 }

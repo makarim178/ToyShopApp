@@ -9,6 +9,8 @@ namespace API.Entity
         public string Url { get; set; }
         public bool IsMain { get; set; }
 
+        public string PublicId { get; set; }
+
         public Product Product { get; set; }
         public int ProductId { get; set; }
     }

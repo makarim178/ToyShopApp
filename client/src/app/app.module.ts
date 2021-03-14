@@ -40,6 +40,7 @@ import { ProvinceCrupAComponent } from './admin/province/province-crup-a/provinc
 import { ProdMainAComponent } from './admin/product/prod-main-a/prod-main-a.component';
 import { ProdCrudAComponent } from './admin/product/prod-crud-a/prod-crud-a.component';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
+import { ProdPhotoEditorAComponent } from './admin/product/prod-photo-editor-a/prod-photo-editor-a.component';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
     ProvinceCrupAComponent,
     ProdMainAComponent,
     ProdCrudAComponent,
+    ProdPhotoEditorAComponent,
   ],
   imports: [
     BrowserModule,

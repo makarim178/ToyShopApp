@@ -34,9 +34,8 @@ export class AccountService {
     return this.http.post(this.baseUrl + 'account/register', userCred).pipe(map((user: User) => {
       if(user) 
       {
-        localStorage.setItem('user', JSON.stringify(user));
-        this.currentUserSource.next(user);
-        return user;
+        this.setCurrentUser(user);
+        // return user;
       }
     }));
   }
