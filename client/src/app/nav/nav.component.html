@@ -26,7 +26,7 @@
             <div class="form-group" >
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="navLinker" *ngIf="(cartService.cartTotal$ | async) as cart">
+                        <a class="navLinker" *ngIf="(cartService.cartTotal$ | async) as cart" routerLink="/cart">
                             <i class="fa fa-shopping-cart text-success font-weight-bold pr-2" style="padding-top: 10px;">({{cart}})</i>
                             
                         </a>

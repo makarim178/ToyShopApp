@@ -23,9 +23,7 @@ export class CartService {
     this.currentCartSource.next(products);
   }
 
-  addToCart(prod: any){
-
-    
+  addToCart(prod: any){   
     
     // new in cart
     if(localStorage.getItem('cart') === null) {

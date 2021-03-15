@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../_services/account.service';
 
 @Component({
@@ -10,8 +11,9 @@ import { AccountService } from '../_services/account.service';
 export class RegisterComponent implements OnInit {
   model: any = {}
   userCred: any ={}
+  guestEmail = "";
 
-  constructor(private accountService: AccountService, private route: Router) { }
+  constructor(private accountService: AccountService, private toastr: ToastrService, private route: Router) { }
 
   ngOnInit(): void {
   }
@@ -27,6 +29,16 @@ export class RegisterComponent implements OnInit {
       })
     }
     
+  }
+
+  AddGuestMember() {
+    if(this.guestEmail != "") {
+      if(localStorage.getItem('guestUser')) localStorage.removeItem('guestUser');
+      localStorage.setItem('guestUser', this.guestEmail);
+      this.route.navigateByUrl('checkout');
+    } else {
+      this.toastr.warning("You must enter your email address to proceed");
+    }
   }
 
 }

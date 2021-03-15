@@ -64,12 +64,14 @@
                     You can check out without creating an account. You will have a chance to create an account later.
                 </p>
 
-                <div class="form-group ml-3 pr-3">
-                    <input type="text" class="form-control" placeholder="Please enter your e-mail address">
-                </div>
+                <form #regForm="ngForm" (ngSubmit)="AddGuestMember()">
+                    <div class="form-group ml-3 pr-3">
+                        <input required [(ngModel)]="guestEmail" name="guestEmail" class="form-control" placeholder="Please enter your e-mail address">
+                    </div>
+                </form>
 
                 <div class="form-group ml-3 pr-3">
-                    <button class="btn btn-warning text-white btn-block ">Checkout as Guest</button>
+                    <button class="btn btn-warning text-white btn-block " (click)="AddGuestMember()">Checkout as Guest</button>
                 </div>
             </div>
         </div>

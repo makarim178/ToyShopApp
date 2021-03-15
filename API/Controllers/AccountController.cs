@@ -60,6 +60,7 @@ namespace API.Controllers
             }
 
             return new UserLogDto{
+                Id = user.Id,
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user)
             };

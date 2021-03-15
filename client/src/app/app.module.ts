@@ -39,6 +39,10 @@ import { ProdMainAComponent } from './admin/product/prod-main-a/prod-main-a.comp
 import { ProdCrudAComponent } from './admin/product/prod-crud-a/prod-crud-a.component';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { ProdPhotoEditorAComponent } from './admin/product/prod-photo-editor-a/prod-photo-editor-a.component';
+import { CartMainComponent } from './cart/cart-main/cart-main.component';
+import { CartListComponent } from './cart/cart-list/cart-list.component';
+import { CartSummaryComponent } from './cart/cart-summary/cart-summary.component';
+import { CheckoutMainComponent } from './checkout/checkout-main/checkout-main.component';
 
 
 @NgModule({
@@ -73,6 +77,10 @@ import { ProdPhotoEditorAComponent } from './admin/product/prod-photo-editor-a/p
     ProdMainAComponent,
     ProdCrudAComponent,
     ProdPhotoEditorAComponent,
+    CartMainComponent,
+    CartListComponent,
+    CartSummaryComponent,
+    CheckoutMainComponent,
   ],
   imports: [
     BrowserModule,
