@@ -5,6 +5,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { TabsModule } from "ngx-bootstrap/tabs";
 import { FileUploadModule } from "ng2-file-upload";
+import { PaginationModule } from "ngx-bootstrap/pagination";
 
 
 
@@ -18,7 +19,8 @@ import { FileUploadModule } from "ng2-file-upload";
     }),
     NgxGalleryModule, 
     TabsModule.forRoot(),
-    FileUploadModule
+    FileUploadModule,
+    PaginationModule.forRoot()
     
   ],
   exports: [
@@ -26,7 +28,8 @@ import { FileUploadModule } from "ng2-file-upload";
     ToastrModule,
     NgxGalleryModule,
     TabsModule,
-    FileUploadModule
+    FileUploadModule,
+    PaginationModule
   ]
 })
 export class SharedModule { }

@@ -20,3 +20,11 @@
     cursor: pointer;
     text-decoration: none;
 }
+
+.card-body{
+    padding: 0 !important;
+}
+
+.freeText {
+    font-size: 8pt;
+}

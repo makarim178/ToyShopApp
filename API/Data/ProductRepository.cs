@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entity;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -25,8 +26,6 @@ namespace API.Data
             _context.Products.Remove(product);
 
         }
-
-        
 
         public async Task<ProductDto> GetProductById(int id)
         {
@@ -53,11 +52,37 @@ namespace API.Data
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<ProductDto>> GetProductsAsync()
+        public async Task<PagedList<ProductDto>> GetProductsAsync(ProductParams productParams)
         {
-            return await _context.Products
-                .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+            var query = _context.Products.AsQueryable();
+
+            // if(productParams.productName != "") query = query.Where(x => x.ProductName.ToLower().Contains(productParams.productName.ToLower()));
+            // if(productParams.Skn != "") query = query.Where(x => x.Skn.ToLower().Contains(productParams.Skn.ToLower()));
+
+            query= query.Where(x => 
+                x.ProductName.ToLower().Contains(productParams.searchString.ToLower()) 
+                || x.Skn.ToLower().Contains(productParams.searchString.ToLower()));
+                
+            if(productParams.brand != "All") query = query.Where(x=> x.Brand.BrandName == productParams.brand);
+            if(productParams.category != "All") query = query.Where(x=> x.Category.CategoryName == productParams.category);
+            if(productParams.Gender != "All") query = query.Where(x=> x.RecommendedGender.ToLower() == productParams.Gender.ToLower());
+            query = query.Where(x=> 
+                x.RecommendedMinimumAge >= int.Parse(productParams.MinAge) 
+                && x.RecommendedMinimumAge <= int.Parse(productParams.MaxAge))
+                ;
+
+            query = productParams.OrderBy switch 
+            {
+                "nameDesc" => query.OrderBy(u => u.ProductName).Reverse(),
+                "priceLow" => query.OrderBy(u => u.ProductPrice),
+                "priceDesc" => query.OrderBy(u => u.ProductPrice).Reverse(),
+                _ => query.OrderBy(u => u.ProductName)
+            };
+
+
+            return await PagedList<ProductDto>.CreateAsync(query.ProjectTo<ProductDto>(_mapper
+                .ConfigurationProvider).AsNoTracking()
+                    , productParams.PageNumber, productParams.PageSize);
         }
 
         // public Task<bool> ProductExistsById(int id)

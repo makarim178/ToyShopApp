@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entity;
+using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -54,11 +56,17 @@ namespace API.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts([FromQuery]ProductParams productParams)
         {
-            var product = await _productRepository.GetProductsAsync();
-            var prodToReturn = _mapper.Map<IEnumerable<ProductDto>>(product);
-            return Ok(prodToReturn);
+            if(productParams.brand == null) productParams.brand = "All";
+            if(productParams.category == null) productParams.category = "All";
+
+            var products = await _productRepository.GetProductsAsync(productParams);
+
+            Response.AddPaginationHeader(products.CurrentPage, products.pageSize
+                , products.TotalCount, products.TotalPages);
+            // var prodToReturn = _mapper.Map<IEnumerable<ProductDto>>(product);
+            return Ok(products);
         }
 
         [HttpGet("{id}", Name = "GetproductById")]

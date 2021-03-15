@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Pagination } from 'src/app/_models/pagination';
+import { ProdParams } from 'src/app/_models/prodParams';
+import { Product } from 'src/app/_models/product';
 import { BrandService } from 'src/app/_services/brand.service';
 import { CategoryService } from 'src/app/_services/category.service';
 import { ProductService } from 'src/app/_services/product.service';
@@ -16,7 +19,10 @@ export class ProdMainAComponent implements OnInit {
   skn="";
   loadSkn = false;
   loadOptions : any [] = [];
-  productList: any [] = [];
+  productList: Product [] = [];
+
+  pagination: Pagination;
+  prodParams: ProdParams;
 
   constructor(private brandService:BrandService, private categoryService: CategoryService
       , private productService: ProductService, private toastr: ToastrService) { }
@@ -48,20 +54,25 @@ export class ProdMainAComponent implements OnInit {
     })
   }
 
+  pageChanged(event: any) {
+    this.prodParams.pageNumber = event.page;
+    this.loadProductList();
+  }
+
   Search() {
 
   }
 
   loadProductList() {
     if(this.searchType == 0) {
-      this.productService.getProducts().subscribe(products => {
-        this.productList = products;
+      this.productService.getProducts(this.prodParams).subscribe(response => {
+        this.productList = response.result;
+        this.pagination = response.pagination;
       })
     }
 
     if(this.searchType == 1) {
       this.productService.getProductBySkn(this.skn).subscribe(product => {
-        // console.log(product);
         const searchProd = [];
         searchProd.push(product);
         this.productList = searchProd;
