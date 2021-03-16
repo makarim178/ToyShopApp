@@ -56,7 +56,7 @@ export class CartService {
         return product;
       });
 
-      console.log(`exists : ${exists}`);
+      //console.log(`exists : ${exists}`);
       
       if(!exists) {
         prod.cartQty = 1;
@@ -68,11 +68,20 @@ export class CartService {
       const noInCart = cartT.reduce((acc, curr) => acc + curr.cartQty, 0);
       
       this.cartTot.next(noInCart);
-      this.toastr.success("Item quantity added by 1 in cart!");
       this.currentCartSource.next(cartT);
+
+      if(exists) {
+        this.toastr.success("Item quantity added by 1 in cart!");
+      } else {
+        this.toastr.success("Item added in cart!");
+      }
     }
+  }
 
-
+  cartEmpty() {
+    if(localStorage.getItem('cart')) localStorage.removeItem('cart');
+    this.currentCartSource.next(null);
+    this.cartTot.next(0);
   }
 
 

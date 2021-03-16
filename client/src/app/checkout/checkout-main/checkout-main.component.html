@@ -14,7 +14,7 @@
                         <h6 class="pt-3 pl-3 pb-3">Contact/Shipping Details</h6>
                     </div>
                     <form #addForm="ngForm" (ngSubmit)="onSubmitForm()">
-                        <input type="text" name="id"[(ngModel)]="model.id" hidden class="form-control">
+                        <input type="text" name="appUserId"[(ngModel)]="model.appUserId" hidden class="form-control">
 
                         <div class="form-group row p-2">
                             
@@ -38,13 +38,13 @@
                             <div class="col-sm-6 mb-2">
                                 <select name="city" class="form-control" [(ngModel)]="selectedDrpDowns.city">
                                     <option value="0">Please Select City</option>
-                                    <option *ngFor="let city of cities" [value]="city.id">{{city.cityname}}</option>
+                                    <option *ngFor="let city of cities" [value]="city.cityname">{{city.cityname}}</option>
                                 </select>
                             </div>
                             <div class="col-sm-6 mb-2">
                                 <select name="province" class="form-control" [(ngModel)]="selectedDrpDowns.provice">
                                     <option value="0">Please Select Province</option>
-                                    <option *ngFor="let province of provinces" [value]="province.id">{{province.provincename}}</option>
+                                    <option *ngFor="let province of provinces" [value]="province.provincename">{{province.provincename}}</option>
                                 </select>
                             </div>
                             <div class="col-sm-6 mb-2">
@@ -53,15 +53,15 @@
                             <div class="col-sm-6 ">
                                 <select name="country" class="form-control" [(ngModel)]="selectedDrpDowns.country">
                                     <option value="0">Please Select Country</option>
-                                    <option *ngFor="let country of countries" [value]="country.id">{{country.countryname}}</option>
+                                    <option *ngFor="let country of countries" [value]="country.countryname">{{country.countryname}}</option>
                                 </select>
                             </div>
     
                             <div class="col-sm-6 mb-2">
-                                <button class="btn btn-secondary btn-block" type="reset">Reset</button>    
+                                <button [disabled]="openPayment" class="btn btn-secondary btn-block" type="reset">Reset</button>    
                             </div>
                             <div class="col-sm-6 mb-2">
-                                <button class="btn btn-primary btn-block" type="submit">Submit</button>    
+                                <button [disabled]="openPayment"  class="btn btn-primary btn-block" type="submit">Submit</button>    
                             </div>
                         </div>
                     </form>
@@ -72,6 +72,16 @@
         </div>
         <div class="col-4">
             <app-cart-summary></app-cart-summary>
+
+            <ng-container *ngIf="openPayment">
+                <ngx-braintree
+                    [clientTokenURL]="'https://localhost:5001/api/orders/getclientToken'"
+                    [createPurchaseURL]="'https://localhost:5001/api/orders/verifypayment'"
+                    [chargeAmount]="55.55"
+                    (paymentStatus)="onpayment($event)">
+                </ngx-braintree>
+
+            </ng-container>
         </div>
     </div>
 

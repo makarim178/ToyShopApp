@@ -1,8 +1,8 @@
-import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
+
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
+import { NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { ToastrService } from 'ngx-toastr';
 import { Product } from 'src/app/_models/product';
 import { BrandService } from 'src/app/_services/brand.service';
@@ -27,8 +27,6 @@ export class ProdCrudAComponent implements OnInit {
   categories: any[]= [];
 
   product: any = {};
-  // galleryOptions: NgxGalleryOptions[];
-  // galleryImages: NgxGalleryImage[];
 
   selectedCat = 0;
   selectedBrand = 0;
@@ -41,52 +39,40 @@ export class ProdCrudAComponent implements OnInit {
       , private toastr: ToastrService, private route: Router) { }
 
   ngOnInit(): void {
-    //console.log(this.urlTrack.snapshot.paramMap.get('id'));
-    // console.log(this.urlTrack.snapshot.url[0].path);
+    if(this.urlTrack.snapshot.paramMap.get('id') !== "new"){    
+      //console.log("I am here");
+        
+      this.loadProduct(this.urlTrack.snapshot.paramMap.get('id'));
+    }
 
     this.loadBrands();
-    this.loadCategories();
-    
-    // this.galleryOptions = [
-    //   {
-    //     width: '500px',
-    //     height: '500px',
-    //     imagePercent: 100,
-    //     thumbnailsColumns: 4,
-    //     imageAnimation: NgxGalleryAnimation.Fade,
-    //     preview: false
-    //   }
-    // ]
-
-    if(this.urlTrack.snapshot.paramMap.get('id') !== "new"){
-  
-      this.loadProduct();
-    }
+    this.loadCategories();   
   }
 
-  getImages(): NgxGalleryImage[] {
-    const imageUrls= [];
+  // getImages(): NgxGalleryImage[] {
+  //   const imageUrls= [];
     
     
-    for(const photo of this.product.photos) {
-      console.log(photo);
+  //   for(const photo of this.product.photos) {
+  //     console.log(photo);
       
       
-      imageUrls.push({
-        small: photo?.url,
-        medium: photo?.url,
-        big: photo?.url
-      })
-    }
+  //     imageUrls.push({
+  //       small: photo?.url,
+  //       medium: photo?.url,
+  //       big: photo?.url
+  //     })
+  //   }
 
-    return imageUrls;
-  }
+  //   return imageUrls;
+  // }
 
-  loadProduct() {
+  loadProduct(prodid) {
+    
     this.forUpdate = true;
-     
+
     this.productService
-      .getProductById(this.urlTrack.snapshot.paramMap.get('id'))
+      .getProductById(prodid)
       .subscribe(product => {
         //console.log(product);
         
@@ -99,7 +85,7 @@ export class ProdCrudAComponent implements OnInit {
         if(gender == "Girls") this.selectedGender = 2;
         
         this.product = product
-        //this.galleryImages = this.getImages();
+        //console.log(this.product);
       });
   }
 

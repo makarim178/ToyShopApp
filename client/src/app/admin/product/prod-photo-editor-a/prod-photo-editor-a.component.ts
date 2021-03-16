@@ -1,5 +1,6 @@
 
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
@@ -16,18 +17,38 @@ import { environment } from 'src/environments/environment';
 })
 export class ProdPhotoEditorAComponent implements OnInit {
 
-  @Input() product: Product;
+  urlname = "new";
+  product: Product;
+  photos: any [] = [];
   uploader: FileUploader;
   hasBaseDropzoneOver = false;
   baseUrl = environment.apiUrl;
   user: User;
 
-  constructor(private accountService: AccountService, private productService: ProductService, private toastr: ToastrService) { 
+  constructor(private urlTrack: ActivatedRoute, private accountService: AccountService, private productService: ProductService, private toastr: ToastrService) { 
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
   }
 
   ngOnInit(): void {
-    this.initializeUploader();
+    if(this.urlTrack.snapshot.paramMap.get('id') !== "new"){
+      this.urlname = this.urlTrack.snapshot.paramMap.get('id')
+      this.loadProduct(this.urlTrack.snapshot.paramMap.get('id'));
+      this.initializeUploader();
+    }
+  }
+
+  loadProduct(id) {
+    this.productService
+      .getProductById(id)
+      .subscribe(product => {     
+        this.product = product;
+        
+        if(this.product.photos.length > 0) {
+          this.photos = [];
+          this.photos = this.product.photos;
+        }
+        
+      });
   }
 
   fileOverBase(e: any) {
@@ -36,7 +57,7 @@ export class ProdPhotoEditorAComponent implements OnInit {
 
   initializeUploader() {
     this.uploader = new FileUploader({
-      url: this.baseUrl + `product/add-photo/${this.product.id}`,
+      url: this.baseUrl + `product/add-photo/${this.urlname}`,
       authToken: `Bearer ${this.user.token}`,
       isHTML5: true,
       allowedFileType: ['image'],
@@ -52,6 +73,7 @@ export class ProdPhotoEditorAComponent implements OnInit {
       if(response) {
         const photo = JSON.parse(response);
         this.product.photos.push(photo);
+        this.loadProduct(this.product.id);
       }
     }
   }
@@ -67,8 +89,8 @@ export class ProdPhotoEditorAComponent implements OnInit {
         
         if(p.id === photo.id) p.isMain = true;
       })
-      //console.log(this.product.photos);
       this.toastr.success("Main Photo Updated!");
+      this.loadProduct(this.product.id);
     })
   }
 

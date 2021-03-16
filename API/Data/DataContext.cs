@@ -18,5 +18,8 @@ namespace API.Data
         public DbSet<Country> Country { get; set; }
         public DbSet<Province> Province { get; set; }
         public DbSet<City> City { get; set; }
+
+        public DbSet<Orders> Orders { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
     }
 }

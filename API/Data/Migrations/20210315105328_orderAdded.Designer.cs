@@ -3,14 +3,16 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210315105328_orderAdded")]
+    partial class orderAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,21 +155,20 @@ namespace API.Data.Migrations
                     b.Property<int>("CartQty")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int?>("OrdersId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("productPrice")
+                    b.Property<double>("ProductPrice")
                         .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrdersId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -306,9 +307,17 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entity.OrderDetails", b =>
                 {
-                    b.HasOne("API.Entity.Orders", null)
-                        .WithMany("OrderDetails")
+                    b.HasOne("API.Entity.Orders", "Orders")
+                        .WithMany()
                         .HasForeignKey("OrdersId");
+
+                    b.HasOne("API.Entity.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("API.Entity.Orders", b =>
@@ -354,11 +363,6 @@ namespace API.Data.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("API.Entity.Orders", b =>
-                {
-                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("API.Entity.Product", b =>

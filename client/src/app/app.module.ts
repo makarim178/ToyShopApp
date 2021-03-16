@@ -43,6 +43,8 @@ import { CartMainComponent } from './cart/cart-main/cart-main.component';
 import { CartListComponent } from './cart/cart-list/cart-list.component';
 import { CartSummaryComponent } from './cart/cart-summary/cart-summary.component';
 import { CheckoutMainComponent } from './checkout/checkout-main/checkout-main.component';
+import { NgxBraintreeModule } from 'ngx-braintree';
+import { OrderCompleteComponent } from './checkout/order-complete/order-complete.component';
 
 
 @NgModule({
@@ -81,6 +83,7 @@ import { CheckoutMainComponent } from './checkout/checkout-main/checkout-main.co
     CartListComponent,
     CartSummaryComponent,
     CheckoutMainComponent,
+    OrderCompleteComponent,
   ],
   imports: [
     BrowserModule,
@@ -90,6 +93,7 @@ import { CheckoutMainComponent } from './checkout/checkout-main/checkout-main.co
     FormsModule,
     SharedModule,
     NgxSpinnerModule,
+    NgxBraintreeModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi:true},

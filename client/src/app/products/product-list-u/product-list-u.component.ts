@@ -24,7 +24,7 @@ export class ProductListUComponent implements OnInit {
   pagination: Pagination;
   prodParams: ProdParams = {
     pageNumber : 1,
-    pageSize : 5,
+    pageSize : 8,
     Gender: "All",
     MaxAge : 100,
     MinAge: 0,
@@ -66,9 +66,6 @@ export class ProductListUComponent implements OnInit {
   }
 
   setAgeParams() {
-
-    //console.log(this.prodParams);
-    
     
     if(this.recAge == 1 ) {
       this.prodParams.MaxAge = 1;
@@ -108,6 +105,7 @@ export class ProductListUComponent implements OnInit {
     
     this.loadProducts();
   }
+
   resetFilters() {
     this.prodParams.pageNumber=1;
     this.prodParams.pageSize=5,

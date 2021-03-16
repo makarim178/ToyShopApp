@@ -9,6 +9,7 @@ import { ProdMainAComponent } from './admin/product/prod-main-a/prod-main-a.comp
 import { ProvinceMainAComponent } from './admin/province/province-main-a/province-main-a.component';
 import { CartMainComponent } from './cart/cart-main/cart-main.component';
 import { CheckoutMainComponent } from './checkout/checkout-main/checkout-main.component';
+import { OrderCompleteComponent } from './checkout/order-complete/order-complete.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
@@ -46,6 +47,7 @@ const routes: Routes = [
   {path: 'product/:id', component:ProductDetailsUComponent},
   {path: 'cart', component:CartMainComponent},
   {path: 'checkout', component:CheckoutMainComponent},
+  {path: 'orderConfirm', component:OrderCompleteComponent},
   {path: '**', component: NotFoundComponent, pathMatch:'full'}
 
 ];
