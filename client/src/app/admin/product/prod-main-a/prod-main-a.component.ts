@@ -111,6 +111,8 @@ export class ProdMainAComponent implements OnInit {
   }
 
   setAgeParams() {
+    this.prodParams.MinAge = 0;
+    this.prodParams.MaxAge = 100;
     
     if(this.recAge == 1 ) {
       this.prodParams.MaxAge = 1;

@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
+import { pipeFromArray } from 'rxjs/internal/util/pipe';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { PaginatedResult } from '../_models/pagination';
@@ -19,6 +20,11 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   getProducts(prodParams: ProdParams) {
+
+    var response = this.productCache.get(Object.values(prodParams).join('-'));
+    if(response) {
+      return of(response);
+    }
     
     let params = this.getPainationHeaders(prodParams.pageNumber, prodParams.pageSize);
 
@@ -32,11 +38,6 @@ export class ProductService {
 
     
     if(prodParams.OrderBy != "low") params = params.append("OrderBy", prodParams.OrderBy);
-    
-    var response = this.productCache.get(Object.values(prodParams).join('-'));
-    if(response) {
-      return of(response);
-    }
     
     return this.getPaginatedResult<Product[]>(this.baseUrl + 'product', params)
       .pipe(map(response => {

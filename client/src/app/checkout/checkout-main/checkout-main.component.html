@@ -77,7 +77,7 @@
                 <ngx-braintree
                     [clientTokenURL]="'https://localhost:5001/api/orders/getclientToken'"
                     [createPurchaseURL]="'https://localhost:5001/api/orders/verifypayment'"
-                    [chargeAmount]="55.55"
+                    [chargeAmount]="EstTot"
                     (paymentStatus)="onpayment($event)">
                 </ngx-braintree>
 
